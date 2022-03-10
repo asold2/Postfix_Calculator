@@ -1,22 +1,38 @@
 package calculator;
 
+import java.util.ArrayList;
+
 public class Client {
+    private static CalculatorVisitor calculatorVisitor = new CalculatorVisitor();
+
     public static void main(String args[]){
-        Token val1 = new Operand(3000);
-        Token val2 = new Operand(34566);
-        Operator operator = new Operator(Operation.MULTIPLY);
+        ArrayList<Token> tokenList = new ArrayList<>();
+        tokenList.add(new Operand(12));
+        tokenList.add(new Operand(23));
+        tokenList.add(new Operator(Operation.PLUS));
+        tokenList.add(new Operand(12));
+        tokenList.add(new Operator(Operation.PLUS));
+        tokenList.add(new Operand(2));
+        tokenList.add(new Operator(Operation.MULTIPLY));
+        tokenList.add(new Operand(4));
+        tokenList.add(new Operator(Operation.MINUS));
+        System.out.println(evaluateExpression(tokenList));
+    }
 
-        CalculatorVisitor calculatorVisitor = new CalculatorVisitor();
-
-        val1.accept(calculatorVisitor);
-        val2.accept(calculatorVisitor);
-        operator.accept(calculatorVisitor);
-
+    public static int evaluateExpression( ArrayList<Token> tokenList){
+        for (Token token: tokenList) {
+            if(token instanceof Operator){
+                calculatorVisitor.visit((Operator) token);
+            }
+            else{
+                calculatorVisitor.visit((Operand) token);
+            }
+        }
         try {
-            System.out.println(calculatorVisitor.getResult());
+            return calculatorVisitor.getResult();
         } catch (MalformedExpressionException e) {
             e.printStackTrace();
         }
-
+        return 0;
     }
 }

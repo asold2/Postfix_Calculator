@@ -21,7 +21,7 @@ public class CalculatorVisitor implements Visitor, Calculator{
             if(operator.getOperation().equals(Operation.MINUS)){
                 val1 = tokenStack.pop();
                 val2 = tokenStack.pop();
-                int resultMinus = (int)val1 - (int) val2;
+                int resultMinus = (int)val2 - (int) val1;
                 tokenStack.push(resultMinus);
             }
 
